@@ -1,0 +1,813 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>La Transformación de Ana - Historieta Interactiva V2</title>
+    <link href="https://fonts.googleapis.com/css2?family=Bangers&family=Open+Sans:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            /* Paleta de Colores: Ocre y Verde Académico - con más contraste */
+            --color-bg: #FDFBF7; /* Crema papel antiguo */
+            --color-primary: #4A6038; /* Verde Bosque oscuro */
+            --color-secondary: #B88E50; /* Ocre Dorado */
+            --color-accent: #DA572A; /* Naranja Terracota vibrante */
+            --color-text: #1a1a1a; /* Negro Tinta */
+            --color-border: #0d0d0d; /* Borde más oscuro */
+            --color-panel-bg: #EAE3D7; /* Fondo de paneles más claro */
+
+            /* Fuentes Anime/Cómic */
+            --font-title: 'Bangers', cursive; /* Para títulos y explosiones */
+            --font-narrative: 'Open Sans', sans-serif; /* Más legible */
+            --font-comic: 'Comic Sans MS', 'Chalkboard SE', 'Comic Neue', cursive; /* Para diálogos */
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            background-color: var(--color-bg);
+            color: var(--color-text);
+            font-family: var(--font-narrative);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+            line-height: 1.6;
+            background-image: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIHZpZXdCb3g9IjAgMCAyMCAyMCIgeG1sbnM9Imh0dHA6Ly93d3cuc2hhcGUuY29tL3N2ZyI+PGNpcmNsZSBjeD0iMTAiIGN5PSIxMCIgcj0iMSIgZmlsbD0iI0VBZTMdNCIvPjwvc3ZnPg=='); /* Patrón de puntos sutil */
+            background-repeat: repeat;
+        }
+
+        /* --- UI GENERAL --- */
+        h1 {
+            font-family: var(--font-title);
+            color: var(--color-primary);
+            font-size: 3.5rem;
+            text-shadow: 4px 4px 0px var(--color-secondary);
+            border-bottom: 5px solid var(--color-accent);
+            padding-bottom: 10px;
+            margin-bottom: 30px;
+            text-align: center;
+            letter-spacing: 2px;
+            line-height: 1;
+        }
+
+        .comic-container {
+            width: 100%;
+            max-width: 900px;
+            background: linear-gradient(145deg, #ffffff, #f0f0f0);
+            border: 5px solid var(--color-border);
+            box-shadow: 10px 10px 0px rgba(0,0,0,0.25),
+            12px 12px 0px var(--color-secondary); /* Doble sombra para profundidad */
+            border-radius: 12px;
+            overflow: hidden;
+            position: relative;
+            margin-bottom: 30px;
+        }
+
+        /* --- VIÑETAS (SCENES) --- */
+        .scene {
+            display: none; /* Oculto por defecto */
+            padding: 25px;
+            animation: fadeIn 0.6s ease-out;
+            min-height: 550px;
+            flex-direction: column;
+            justify-content: space-between;
+            background: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cGF0aCBkPSJNMCAwSDEwVjMwSDMwVjYwSDBWMHoigmlsbD0iI2Y5ZjhmNyIvPjwvc3ZnPg==') top left / 30px 30px repeat; /* Sutil patrón de puntos de fondo */
+            background-blend-mode: multiply;
+        }
+
+        .scene.active {
+            display: flex;
+        }
+
+        .visual-stage {
+            flex-grow: 1;
+            background: var(--color-panel-bg);
+            border: 3px solid var(--color-border);
+            margin-bottom: 20px;
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            border-radius: 8px;
+            box-shadow: inset 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        /* Placeholder de Imagen */
+        .image-placeholder {
+            width: 100%;
+            height: 100%;
+            background-color: #e0e0e0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: var(--font-comic);
+            color: #777;
+            font-size: 1.2rem;
+            text-align: center;
+            border: 2px dashed #bbb;
+            background-image: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgdmlld0JveD0iMCAwIDEwMCAxMDAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGcgZmlsbD0ibm9uZSIgc3Jyb2tlPSIjY2NjIiBzdHJva2Utd2lkdGg9IjIiPjxjaXJjbGUgY3g9IjUwIiBjeT0iMzUiIHI9IjEwIi8+PHBhdGggZD0iTTMwIDc1bDEwLTExIDE1IDEwIDEwLTcuNSAxNSAxMCIvPjxwYXRoIGQ9Ik03MCAxNVYzME04NSA1MEg3ME01MCA3MEg0ME0yNSAzMEgyMCIvPjwvZz48L3N2Zz4=');
+            background-repeat: no-repeat;
+            background-position: center 30%;
+            background-size: 40px;
+        }
+
+        .image-placeholder img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+            display: none; /* Oculto por defecto, se mostrará cuando se inserte la imagen real */
+        }
+        /* Fin Placeholder de Imagen */
+
+        .interaction-target {
+            animation: pulse 2s infinite;
+            z-index: 10;
+            cursor: pointer;
+            transition: transform 0.2s ease-out, filter 0.2s ease-out;
+        }
+        .interaction-target:hover {
+            transform: scale(1.05);
+            filter: brightness(1.1);
+        }
+
+        /* Globos de Diálogo */
+        .speech-bubble {
+            background: white;
+            border: 3px solid var(--color-border);
+            border-radius: 20px;
+            padding: 20px;
+            font-family: var(--font-comic);
+            position: relative;
+            margin-top: 15px;
+            box-shadow: 5px 5px 0px rgba(0,0,0,0.15);
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.6s cubic-bezier(0.68, -0.55, 0.27, 1.55); /* Bounce effect */
+        }
+
+        .speech-bubble.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .speech-bubble::after { /* Cola del globo de diálogo */
+            content: '';
+            position: absolute;
+            top: -15px;
+            left: 30px;
+            border-width: 0 15px 15px;
+            border-style: solid;
+            border-color: transparent transparent var(--color-border);
+            filter: drop-shadow(1px 1px 0 rgba(0,0,0,0.1));
+        }
+        .speech-bubble::before { /* Relleno blanco de la cola */
+            content: '';
+            position: absolute;
+            top: -11px;
+            left: 30px;
+            border-width: 0 15px 15px;
+            border-style: solid;
+            border-color: transparent transparent white;
+            z-index: 1;
+        }
+
+        .narrative-box {
+            background: var(--color-primary);
+            color: white;
+            padding: 10px 15px;
+            font-size: 1rem;
+            border: 3px solid var(--color-border);
+            margin-bottom: 15px;
+            font-weight: bold;
+            text-align: center;
+            border-radius: 8px;
+            box-shadow: 4px 4px 0px rgba(0,0,0,0.15);
+        }
+
+        /* --- CONTROLES --- */
+        .controls {
+            display: flex;
+            justify-content: space-between;
+            padding: 15px 25px;
+            background: var(--color-secondary);
+            border-top: 5px solid var(--color-border);
+            border-bottom-left-radius: 8px;
+            border-bottom-right-radius: 8px;
+        }
+
+        button {
+            background: white;
+            border: 3px solid var(--color-border);
+            padding: 12px 25px;
+            font-family: var(--font-comic);
+            font-weight: bold;
+            cursor: pointer;
+            border-radius: 8px;
+            box-shadow: 4px 4px 0px rgba(0,0,0,0.3);
+            transition: transform 0.1s, background-color 0.2s;
+            font-size: 1rem;
+            text-transform: uppercase;
+        }
+
+        button:hover:not(:disabled) {
+            background-color: #fffac2;
+        }
+
+        button:active:not(:disabled) {
+            transform: translate(3px, 3px);
+            box-shadow: 1px 1px 0px rgba(0,0,0,0.3);
+        }
+
+        button:disabled {
+            background: #e0e0e0;
+            color: #999;
+            cursor: not-allowed;
+            box-shadow: none;
+            transform: none;
+        }
+
+        /* --- LOG & PROGRESS --- */
+        .log-panel {
+            margin-top: 20px;
+            width: 100%;
+            max-width: 900px;
+        }
+
+        .log-toggle {
+            background: var(--color-primary);
+            color: white;
+            width: 100%;
+            text-align: left;
+            margin-bottom: 5px;
+        }
+
+        .terminal {
+            background: #1f1f1f;
+            color: #00ff00;
+            font-family: 'Courier New', monospace;
+            padding: 15px;
+            height: 200px;
+            overflow-y: auto;
+            display: none;
+            border: 3px solid var(--color-border);
+            font-size: 0.85rem;
+            border-radius: 8px;
+            box-shadow: inset 0 0 10px rgba(0,0,0,0.5);
+        }
+
+        .terminal.open { display: block; }
+        .log-entry { margin-bottom: 5px; border-bottom: 1px dashed #333; padding-bottom: 3px; }
+        .log-time { color: #ffff00; margin-right: 10px; }
+
+        /* --- ANIMACIONES --- */
+        @keyframes pulse {
+            0% { transform: scale(1); filter: drop-shadow(0 0 0 rgba(255,165,0,0)); }
+            50% { transform: scale(1.05); filter: drop-shadow(0 0 10px var(--color-accent)); }
+            100% { transform: scale(1); filter: drop-shadow(0 0 0 rgba(255,165,0,0)); }
+        }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-5px); }
+            100% { transform: translateY(0px); }
+        }
+
+        /* --- Minijuego Drag & Drop --- */
+        .minigame-container {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            width: 100%;
+            padding: 20px;
+            border: 2px dashed var(--color-primary);
+            border-radius: 10px;
+            background-color: var(--color-panel-bg);
+            margin-top: 20px;
+        }
+
+        .drop-zones {
+            display: flex;
+            justify-content: space-around;
+            gap: 15px;
+            min-height: 200px;
+        }
+
+        .drop-zone {
+            flex: 1;
+            border: 3px dashed var(--color-secondary);
+            border-radius: 10px;
+            padding: 15px;
+            background-color: #fff;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+            min-height: 180px;
+        }
+
+        .drop-zone.hover {
+            background-color: #e6ffe6;
+            border-color: var(--color-primary);
+        }
+        .drop-zone.correct {
+            border-color: green;
+            box-shadow: 0 0 10px green;
+        }
+
+        .drop-zone h3 {
+            font-family: var(--font-comic);
+            color: var(--color-primary);
+            margin-bottom: 10px;
+            font-size: 1.3rem;
+        }
+
+        .draggable-items {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .draggable {
+            background-color: var(--color-accent);
+            color: white;
+            padding: 10px 15px;
+            border-radius: 20px;
+            cursor: grab;
+            font-family: var(--font-narrative);
+            font-size: 0.9rem;
+            box-shadow: 2px 2px 0px rgba(0,0,0,0.2);
+            transition: background-color 0.2s, transform 0.1s;
+        }
+
+        .draggable:hover {
+            background-color: #f07040;
+        }
+        .draggable:active {
+            cursor: grabbing;
+            transform: scale(0.98);
+        }
+        .draggable.dragged {
+            opacity: 0.5;
+        }
+        .draggable.correct {
+            background-color: green;
+            cursor: default;
+        }
+
+        .minigame-status {
+            text-align: center;
+            font-family: var(--font-comic);
+            font-size: 1.1rem;
+            color: var(--color-text);
+        }
+        .minigame-status.success { color: green; }
+
+        /* Media Queries para Responsiveness */
+        @media (max-width: 768px) {
+            h1 { font-size: 2.5rem; }
+            .comic-container { margin: 10px; }
+            .scene { min-height: 500px; padding: 15px; }
+            .speech-bubble { padding: 15px; font-size: 0.9rem; }
+            .controls { padding: 10px 15px; }
+            button { padding: 8px 15px; font-size: 0.9rem; }
+            .drop-zones { flex-direction: column; }
+            .image-placeholder { font-size: 1rem; }
+        }
+
+    </style>
+</head>
+<body>
+
+<audio id="pageFlipSound" src="page-flip.mp3" preload="auto"></audio>
+<audio id="correctSound" src="correct.mp3" preload="auto"></audio> <audio id="incorrectSound" src="incorrect.mp3" preload="auto"></audio> <h1>La Transformación de Ana</h1>
+
+<div class="comic-container">
+
+    <div class="scene active" id="scene-1" data-index="1">
+        <div class="narrative-box">ESCENA 1: LA FRUSTRACIÓN (Inicio de la Aventura)</div>
+        <div class="visual-stage">
+            <div class="image-placeholder interaction-target" onclick="interact(1)">
+
+            </div>
+        </div>
+        <div class="speech-bubble" id="bubble-1">
+            <strong>Ana (Pensamiento):</strong> "¡Ugh! Otro curso donde solo 'consumo' PDFs. Siento que solo cumplo trámites, ¡no que realmente aprendo o creo algo!"
+        </div>
+    </div>
+
+    <div class="scene" id="scene-2" data-index="2">
+        <div class="narrative-box">ESCENA 2: EL DESPERTAR (La Voz Interior)</div>
+        <div class="visual-stage">
+            <div class="image-placeholder interaction-target" onclick="interact(2)">
+
+            </div>
+        </div>
+        <div class="speech-bubble" id="bubble-2">
+            <strong>Ana:</strong> "¡Increíble! Nunca me había escuchado explicar estos conceptos con mis propias palabras. Al grabarme, ¡la información cobra vida y la entiendo mucho mejor!"
+        </div>
+    </div>
+
+    <div class="scene" id="scene-3" data-index="3">
+        <div class="narrative-box">ESCENA 3: DISEÑANDO EL PROBLEMA (Contexto Real)</div>
+        <div class="visual-stage">
+            <div class="image-placeholder interaction-target" onclick="interact(3)">
+
+            </div>
+        </div>
+        <div class="speech-bubble" id="bubble-3">
+            <strong>Narrador:</strong> Ana decide que su aprendizaje debe impactar. Propone un proyecto para abordar la contaminación del arroyo local, ¡un problema real de su comunidad!
+        </div>
+    </div>
+
+    <div class="scene" id="scene-4" data-index="4">
+        <div class="narrative-box">ESCENA 4: EL DIÁLOGO SOCRÁTICO (Chatbot Coach)</div>
+        <div class="visual-stage">
+            <div class="image-placeholder interaction-target" onclick="interact(4)">
+
+            </div>
+        </div>
+        <div class="speech-bubble" id="bubble-4">
+            <strong>Chatbot Sócrates:</strong> "¿Por qué propones una estrategia de recolección de datos sin acceso a internet?"<br>
+            <strong>Ana:</strong> "No todos mis vecinos tienen fibra óptica, pero todos tienen historias que contar y conocimientos valiosos. ¡Usaremos entrevistas y mapas colaborativos físicos!"
+        </div>
+    </div>
+
+    <div class="scene" id="scene-5" data-index="5">
+        <div class="narrative-box">ESCENA 5: EVALUACIÓN DE PARES (Colaboración Activa)</div>
+        <div class="visual-stage">
+            <div class="image-placeholder interaction-target" onclick="interact(5)">
+
+            </div>
+        </div>
+        <div class="speech-bubble" id="bubble-5">
+            <strong>Narrador:</strong> El aula de Ana se transforma en un laboratorio de ideas. Los compañeros co-evalúan las propuestas usando rúbricas que diseñaron ellos mismos, ¡aprendiendo de y con sus pares!
+        </div>
+    </div>
+
+    <div class="scene" id="scene-6" data-index="6">
+        <div class="narrative-box">ESCENA 6: ¡MINIJUEGO! CONCEPTOS DE LA PRAXIS</div>
+        <div class="visual-stage">
+            <div class="image-placeholder">
+
+            </div>
+            <div class="minigame-container interaction-target" onclick="interact(6)">
+                <p class="minigame-status" id="minigame-status">Arrastra los conceptos a la categoría correcta:</p>
+                <div class="drop-zones">
+                    <div class="drop-zone" id="zone-tradicional" data-category="tradicional">
+                        <h3>Pedagogía Tradicional</h3>
+                    </div>
+                    <div class="drop-zone" id="zone-activa" data-category="activa">
+                        <h3>Pedagogía Activa / Praxis</h3>
+                    </div>
+                </div>
+                <div class="draggable-items" id="draggable-items">
+                    <div class="draggable" draggable="true" data-concept="Consumo de Información" data-category="tradicional">Consumo de Información</div>
+                    <div class="draggable" draggable="true" data-concept="Memorización" data-category="tradicional">Memorización</div>
+                    <div class="draggable" draggable="true" data-concept="Creación de Conocimiento" data-category="activa">Creación de Conocimiento</div>
+                    <div class="draggable" draggable="true" data-concept="Resolución de Problemas Reales" data-category="activa">Resolución de Problemas Reales</div>
+                    <div class="draggable" draggable="true" data-concept="Docente Transmisor" data-category="tradicional">Docente Transmisor</div>
+                    <div class="draggable" draggable="true" data-concept="Docente Guía/Facilitador" data-category="activa">Docente Guía/Facilitador</div>
+                    <div class="draggable" draggable="true" data-concept="Evaluación Sumativa" data-category="tradicional">Evaluación Sumativa</div>
+                    <div class="draggable" draggable="true" data-concept="Co-evaluación y Formativa" data-category="activa">Co-evaluación y Formativa</div>
+                </div>
+                <button id="minigame-check-btn" onclick="checkMinigame()" disabled>Verificar</button>
+            </div>
+        </div>
+        <div class="speech-bubble" id="bubble-6">
+            <strong>Ana (Pensamiento):</strong> "¡El cambio es radical! De una pedagogía de consumo pasivo a una de creación activa y significativo. Este minijuego lo resume bien."
+        </div>
+    </div>
+
+    <div class="scene" id="scene-7" data-index="7">
+        <div class="narrative-box">ESCENA 7: APLICACIÓN DOCENTE (Inspirando a Otros)</div>
+        <div class="visual-stage">
+            <div class="image-placeholder interaction-target" onclick="interact(7)">
+
+            </div>
+        </div>
+        <div class="speech-bubble" id="bubble-7">
+            <strong>Ana (Docente):</strong> "¡Hoy no hay lección magistral! Hoy salimos a investigar el problema del arroyo. El chatbot será su asistente, guiándolos en cada paso de su descubrimiento."
+        </div>
+    </div>
+
+    <div class="scene" id="scene-8" data-index="8">
+        <div class="narrative-box">ESCENA 8: CIERRE Y REFLEXIÓN (Tu Turno)</div>
+        <div class="visual-stage">
+            <div class="image-placeholder interaction-target" onclick="interact(8)">
+
+            </div>
+        </div>
+        <div class="speech-bubble" id="bubble-8">
+            <strong>Ana:</strong> "He vivido la transformación. De un aprendizaje aburrido a uno lleno de propósito y creación. Ahora, ¿estás listo tú para transformar tu práctica educativa de un repositorio estático a un vibrante laboratorio de experiencias?"
+            <br><br>
+            <button onclick="generateReport()" style="background: var(--color-accent); color: white; width: 100%; border-color: var(--color-border);">📂 Generar Informe de Práctica</button>
+        </div>
+    </div>
+
+    <div class="controls">
+        <button id="btn-prev" onclick="changeScene(-1)" disabled>⬅ Anterior</button>
+        <span id="page-indicator" style="font-weight: bold; align-self: center; font-family: var(--font-comic); font-size: 1.1rem; color: var(--color-text);">1 / 8</span>
+        <button id="btn-next" onclick="changeScene(1)" disabled>Siguiente ➡</button>
+    </div>
+</div>
+
+<div class="log-panel">
+    <button class="log-toggle" onclick="toggleTerminal()">📋 Ver Diario de Campo (Historial)</button>
+    <div class="terminal" id="terminal-content">
+        <div class="log-entry">> Sistema iniciado. Esperando interacción del usuario...</div>
+    </div>
+</div>
+
+<div style="max-width: 900px; margin-top: 40px; border-top: 3px dashed var(--color-secondary); padding-top: 20px; color: #666; font-size: 0.9rem; text-align: center;">
+    <h3>PARA EL DOCENTE: Guía Pedagógica y de Implementación</h3>
+    <p><strong>Objetivo Pedagógico:</strong> Esta historieta interactiva busca que el futuro docente reflexione y experimente un cambio de paradigma, moviéndose de una enseñanza basada en la transmisión de contenidos a una pedagogía de la praxis, donde el estudiante es constructor activo de su aprendizaje, resolviendo problemas reales y colaborando.</p>
+    <p><strong>Verificación de Integridad y Progreso:</strong> Al finalizar la historieta, el sistema genera un archivo TXT con un historial de las interacciones del usuario y un hash SHA-256 único. Este hash sirve como "firma digital" para asegurar que el contenido del informe no ha sido alterado manualmente, confirmando que el estudiante ha navegado por la experiencia. Si el estudiante intenta modificar el texto del informe, el hash resultante no coincidirá con el calculado por el sistema.</p>
+    <p><strong>Integración con Moodle:</strong></p>
+    <ol>
+        <li><strong>Subida del Recurso:</strong> Suba este archivo HTML (`historieta_ana_v2.html`) a Moodle como un "Recurso: Archivo". Asegúrese de que el archivo `page-flip.mp3` (y `correct.mp3`, `incorrect.mp3` si los usa) estén en la misma carpeta que el HTML al comprimirlos, o suba el HTML directamente y los archivos de audio por separado en la misma sección de Moodle.</li>
+        <li><strong>Actividad de Tarea:</strong> Cree una actividad de "Tarea" en Moodle. En las instrucciones de la tarea, pida a los estudiantes que naveguen por la historieta, completen todas las interacciones (incluido el minijuego) y, al finalizar, descarguen el archivo `Bitacora_Transformacion_Ana.txt`.</li>
+        <li><strong>Entrega y Calificación:</strong> Los estudiantes deberán subir este archivo TXT como entrega de la tarea. Usted podrá verificar el hash del informe para confirmar la autenticidad del recorrido del estudiante. Si el hash del archivo subido no coincide con el que debería generar el sistema (puede generar uno usted mismo completando la historieta), indicaría una posible manipulación.</li>
+    </ol>
+    <p><strong>Ideas para Expansión Futura:</strong></p>
+    <ul>
+        <li>**Más Minijuegos:** Añadir más desafíos interactivos que refuercen conceptos clave en diferentes viñetas.</li>
+        <li>**Imágenes Dinámicas:** Usar JavaScript para cambiar imágenes o añadir animaciones CSS más complejas a las ilustraciones.</li>
+        <li>**Personalización del Avatar:** Permitir que el usuario elija el avatar de Ana al inicio.</li>
+        <li>**Ramas Narrativas:** Integrar decisiones del usuario que cambien ligeramente el curso de la historia, con diferentes finales o reflexiones.</li>
+        <li>**Integración con APIs:** Aunque no se requiere, se podría integrar con APIs para generar contenido dinámico o ejercicios.</li>
+        <li>**Gamificación Avanzada:** Puntos, insignias, tablas de clasificación (aunque esto requeriría un backend).</li>
+    </ul>
+</div>
+
+<script>
+    // --- ESTADO DEL LABORATORIO ---
+    let currentScene = 1;
+    const totalScenes = 8;
+    const state = {
+        unlocked: Array(totalScenes + 1).fill(false), // +1 para usar índice 1-based
+        interactions: [],
+        startTime: new Date(),
+        sceneTimes: {}
+    };
+
+    // Inicializar tiempo de escena 1
+    state.sceneTimes[1] = new Date();
+
+    // Audio
+    const pageFlipSound = document.getElementById('pageFlipSound');
+    const correctSound = document.getElementById('correctSound');
+    const incorrectSound = document.getElementById('incorrectSound');
+
+    // --- LÓGICA DE NAVEGACIÓN ---
+    function updateScene() {
+        // Ocultar todas
+        document.querySelectorAll('.scene').forEach(el => el.classList.remove('active'));
+
+    // Mostrar actual
+        const activeScene = document.getElementById(`scene-${currentScene}`);
+        activeScene.classList.add('active');
+
+        // Reproducir sonido de página (si existe)
+        if (pageFlipSound) {
+            pageFlipSound.currentTime = 0;
+            pageFlipSound.play().catch(e => { /* Ignorar error si no hay interacción previa */ });
+        }
+
+        // Actualizar UI
+        document.getElementById('page-indicator').innerText = `${currentScene} / ${totalScenes}`;
+        document.getElementById('btn-prev').disabled = (currentScene === 1);
+
+        // Solo permitir siguiente si está desbloqueada la escena actual
+        const isUnlocked = state.unlocked[currentScene];
+        document.getElementById('btn-next').disabled = (currentScene === totalScenes || !isUnlocked);
+
+        // Registrar tiempo de entrada
+        if (!state.sceneTimes[currentScene]) {
+            state.sceneTimes[currentScene] = new Date();
+        }
+
+        logToTerminal(`Navegación: Usuario entró a Escena ${currentScene}`);
+    }
+
+    function changeScene(direction) {
+        currentScene += direction;
+        updateScene();
+    }
+
+    // --- LÓGICA DE INTERACCIÓN ---
+    function interact(sceneIndex) {
+        // CASO ESPECIAL: Escena 6 (Minijuego)
+        // Hacer clic en el contenedor del juego solo registra actividad, no desbloquea.
+        // El desbloqueo real ocurre en la función checkMinigame()
+        if (sceneIndex === 6) {
+            if (!state.unlocked[sceneIndex]) {
+                logToTerminal(`JUEGO: Usuario interactuando con el tablero de clasificación.`);
+            }
+            return;
+        }
+
+        if (state.unlocked[sceneIndex]) return; // Ya completado
+
+        completeInteraction(sceneIndex);
+    }
+
+    function completeInteraction(sceneIndex) {
+        state.unlocked[sceneIndex] = true;
+
+        // Mostrar diálogo/burbuja
+        const bubble = document.getElementById(`bubble-${sceneIndex}`);
+        if (bubble) bubble.classList.add('visible');
+
+        // Habilitar botón siguiente
+        if (sceneIndex < totalScenes) {
+            document.getElementById('btn-next').disabled = false;
+        }
+
+        // Registrar acción en datos
+        const interactionData = {
+            scene: sceneIndex,
+            timestamp: new Date().toISOString(),
+            action: "INTERACCIÓN_COMPLETADA"
+        };
+        state.interactions.push(interactionData);
+
+        let msg = `Escena ${sceneIndex} completada.`;
+        if (sceneIndex === 6) msg = "MINIJUEGO SUPERADO: Conceptos clasificados correctamente.";
+
+        logToTerminal(`ACCIÓN: ${msg} [Desbloqueado]`);
+
+        // Reproducir sonido de éxito (si existe y no es el juego que tiene el suyo propio)
+        if(sceneIndex !== 6 && correctSound) {
+            correctSound.currentTime = 0;
+            correctSound.play().catch(e => {});
+        }
+    }
+
+    // --- LÓGICA DEL MINIJUEGO (DRAG & DROP) ---
+    const draggables = document.querySelectorAll('.draggable');
+    const dropZones = document.querySelectorAll('.drop-zone');
+
+    draggables.forEach(draggable => {
+        draggable.addEventListener('dragstart', () => {
+            draggable.classList.add('dragged');
+        });
+
+        draggable.addEventListener('dragend', () => {
+            draggable.classList.remove('dragged');
+        });
+    });
+
+    dropZones.forEach(zone => {
+        zone.addEventListener('dragover', e => {
+            e.preventDefault(); // Necesario para permitir soltar
+            zone.classList.add('hover');
+        });
+
+        zone.addEventListener('dragleave', () => {
+            zone.classList.remove('hover');
+        });
+
+        zone.addEventListener('drop', e => {
+            e.preventDefault();
+            zone.classList.remove('hover');
+            const draggable = document.querySelector('.dragged');
+            if (draggable) {
+                zone.appendChild(draggable);
+                checkMinigameStatus(); // Verificar si ya se puede validar
+            }
+        });
+    });
+
+    function checkMinigameStatus() {
+        // Habilitar botón "Verificar" solo si no quedan items en el origen
+        const originalContainer = document.getElementById('draggable-items');
+        const remaining = originalContainer.querySelectorAll('.draggable').length;
+
+        const checkBtn = document.getElementById('minigame-check-btn');
+        if (remaining === 0) {
+            checkBtn.disabled = false;
+            checkBtn.style.backgroundColor = 'var(--color-accent)';
+            checkBtn.style.color = 'white';
+            checkBtn.style.cursor = 'pointer';
+        }
+    }
+
+    function checkMinigame() {
+        let correctCount = 0;
+        const totalItems = 8; // Total de conceptos
+        let allCorrect = true;
+
+        const zones = document.querySelectorAll('.drop-zone');
+        zones.forEach(zone => {
+            const zoneCategory = zone.getAttribute('data-category');
+            const items = zone.querySelectorAll('.draggable');
+
+            items.forEach(item => {
+                if (item.getAttribute('data-category') === zoneCategory) {
+                    correctCount++;
+                    item.classList.add('correct'); // Estilo visual verde
+                    item.draggable = false; // Bloquear los correctos
+                } else {
+                    allCorrect = false;
+                    // Opcional: devolver visualmente el item incorrecto
+                    // item.style.backgroundColor = '#ffcccc';
+                }
+            });
+        });
+
+        const statusMsg = document.getElementById('minigame-status');
+
+        if (allCorrect && correctCount === totalItems) {
+            statusMsg.innerText = "¡EXCELENTE! Has clasificado correctamente los paradigmas.";
+            statusMsg.classList.add('success');
+            if (correctSound) correctSound.play();
+
+            // Deshabilitar controles del juego
+            document.getElementById('minigame-check-btn').disabled = true;
+            document.getElementById('minigame-check-btn').innerText = "¡COMPLETADO!";
+
+            // DESBLOQUEAR ESCENA 6
+            completeInteraction(6);
+
+        } else {
+            statusMsg.innerText = "Aún hay errores. Revisa los conceptos rojos o mal ubicados e intenta de nuevo.";
+            statusMsg.style.color = "red";
+            if (incorrectSound) incorrectSound.play();
+
+            setTimeout(() => { statusMsg.style.color = "var(--color-text)"; }, 3000);
+        }
+    }
+
+    // --- SISTEMA DE LOGS (TERMINAL) ---
+    function logToTerminal(text) {
+        const terminal = document.getElementById('terminal-content');
+        const time = new Date().toLocaleTimeString();
+        const entry = document.createElement('div');
+        entry.className = 'log-entry';
+        entry.innerHTML = `<span class="log-time">[${time}]</span> ${text}`;
+        terminal.appendChild(entry);
+        terminal.scrollTop = terminal.scrollHeight;
+    }
+
+    function toggleTerminal() {
+        document.getElementById('terminal-content').classList.toggle('open');
+    }
+
+    // --- GENERACIÓN DE INFORME ---
+    async function generateReport() {
+        const endTime = new Date();
+        const duration = Math.round((endTime - state.startTime) / 1000);
+
+        let reportContent = `BITÁCORA DE TRANSFORMACIÓN EDUCATIVA\n`;
+        reportContent += `=====================================\n`;
+        reportContent += `Fecha: ${new Date().toLocaleString()}\n`;
+        reportContent += `Duración Total: ${duration} segundos\n`;
+        reportContent += `Usuario: Estudiante de Formación Docente\n\n`;
+
+        reportContent += `REGISTRO DE INTERACCIONES:\n`;
+        state.interactions.forEach(inte => {
+            reportContent += `[✔] Escena ${inte.scene}: ${inte.action} - ${inte.timestamp}\n`;
+        });
+
+        reportContent += `\nREFLEXIÓN FINAL:\n`;
+        reportContent += `El estudiante ha completado el recorrido narrativo y ha demostrado diferenciar entre paradigmas tradicionales y activos mediante la clasificación de conceptos.\n`;
+
+        // Hashing para integridad
+        const hash = await sha256(reportContent);
+        reportContent += `\n-------------------------------------\n`;
+        reportContent += `FIRMA DIGITAL (HASH SHA-256): ${hash}\n`;
+        reportContent += `(Si este archivo es modificado, la firma no coincidirá)\n`;
+        reportContent += `-------------------------------------\n`;
+
+        downloadFile("Bitacora_Transformacion_Ana.txt", reportContent);
+    }
+
+    // Función Helper para Criptografía
+    async function sha256(message) {
+        const msgBuffer = new TextEncoder().encode(message);
+        const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
+        const hashArray = Array.from(new Uint8Array(hashBuffer));
+        return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+    }
+
+    function downloadFile(filename, content) {
+        const element = document.createElement('a');
+        element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(content));
+        element.setAttribute('download', filename);
+        element.style.display = 'none';
+        document.body.appendChild(element);
+        element.click();
+        document.body.removeChild(element);
+
+        logToTerminal("SISTEMA: Informe generado y descargado correctamente.");
+        alert("¡Felicidades! Tu bitácora se ha descargado. Súbela a la plataforma Moodle.");
+    }
+</script>
+</body>
+</html>
