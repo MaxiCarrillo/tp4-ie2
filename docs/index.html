@@ -7,19 +7,19 @@
     <link href="https://fonts.googleapis.com/css2?family=Bangers&family=Open+Sans:wght@400;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            /* Paleta de Colores: Ocre y Verde Académico - con más contraste */
-            --color-bg: #FDFBF7; /* Crema papel antiguo */
-            --color-primary: #4A6038; /* Verde Bosque oscuro */
-            --color-secondary: #B88E50; /* Ocre Dorado */
-            --color-accent: #DA572A; /* Naranja Terracota vibrante */
-            --color-text: #1a1a1a; /* Negro Tinta */
-            --color-border: #0d0d0d; /* Borde más oscuro */
-            --color-panel-bg: #EAE3D7; /* Fondo de paneles más claro */
+            /* Nueva paleta: azules claros y cerúleos estilo cómic */
+            --color-bg: #E9F4FF;            /* Azul muy claro de fondo */
+            --color-primary: #176B9E;      /* Azul cerúleo medio */
+            --color-secondary: #4BB5FF;    /* Azul claro vibrante */
+            --color-accent: #FFB347;       /* Naranja suave para acentos */
+            --color-text: #102035;         /* Azul grisáceo oscuro para texto */
+            --color-border: #051428;       /* Borde casi negro azulado */
+            --color-panel-bg: #F7FBFF;     /* Panel casi blanco azulado */
 
-            /* Fuentes Anime/Cómic */
-            --font-title: 'Bangers', cursive; /* Para títulos y explosiones */
-            --font-narrative: 'Open Sans', sans-serif; /* Más legible */
-            --font-comic: 'Comic Sans MS', 'Chalkboard SE', 'Comic Neue', cursive; /* Para diálogos */
+            /* Fuentes estilo cómic */
+            --font-title: 'Bangers', cursive;
+            --font-narrative: 'Open Sans', Arial, sans-serif;
+            --font-comic: 'Comic Sans MS', 'Comic Neue', 'Chalkboard SE', cursive;
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -28,24 +28,28 @@
             background-color: var(--color-bg);
             color: var(--color-text);
             font-family: var(--font-narrative);
+            font-size: 16px;
             display: flex;
             flex-direction: column;
             align-items: center;
             min-height: 100vh;
             padding: 20px;
             line-height: 1.6;
-            background-image: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIHZpZXdCb3g9IjAgMCAyMCAyMCIgeG1sbnM9Imh0dHA6Ly93d3cuc2hhcGUuY29tL3N2ZyI+PGNpcmNsZSBjeD0iMTAiIGN5PSIxMCIgcj0iMSIgZmlsbD0iI0VBZTMdNCIvPjwvc3ZnPg=='); /* Patrón de puntos sutil */
-            background-repeat: repeat;
+            /* Trama tipo papel cómic */
+            background-image: radial-gradient(circle at 1px 1px, rgba(0,0,0,0.05) 1px, transparent 0);
+            background-size: 18px 18px;
         }
 
         /* --- UI GENERAL --- */
         h1 {
             font-family: var(--font-title);
-            color: var(--color-primary);
-            font-size: 3.5rem;
-            text-shadow: 4px 4px 0px var(--color-secondary);
-            border-bottom: 5px solid var(--color-accent);
-            padding-bottom: 10px;
+            color: #FFFFFF;
+            font-size: 3.4rem;
+            text-shadow: 5px 5px 0 #102035;
+            background: linear-gradient(90deg, var(--color-primary), var(--color-secondary));
+            border: 4px solid var(--color-border);
+            border-radius: 14px;
+            padding: 12px 26px;
             margin-bottom: 30px;
             text-align: center;
             letter-spacing: 2px;
@@ -55,10 +59,10 @@
         .comic-container {
             width: 100%;
             max-width: 900px;
-            background: linear-gradient(145deg, #ffffff, #f0f0f0);
+            background: #FFFFFF;
             border: 5px solid var(--color-border);
-            box-shadow: 10px 10px 0px rgba(0,0,0,0.25),
-            12px 12px 0px var(--color-secondary); /* Doble sombra para profundidad */
+            box-shadow: 12px 12px 0 #102035,
+                        18px 18px 0 var(--color-secondary);
             border-radius: 12px;
             overflow: hidden;
             position: relative;
@@ -67,19 +71,18 @@
 
         /* --- VIÑETAS (SCENES) --- */
         .scene {
-            display: none; /* Oculto por defecto */
-            padding: 25px;
-            animation: fadeIn 0.6s ease-out;
-            min-height: 550px;
+            display: none;
+            padding: 22px 26px 28px;
+            animation: fadeIn 0.45s ease-out;
+            min-height: 560px;
             flex-direction: column;
             justify-content: space-between;
-            background: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cGF0aCBkPSJNMCAwSDEwVjMwSDMwVjYwSDBWMHoigmlsbD0iI2Y5ZjhmNyIvPjwvc3ZnPg==') top left / 30px 30px repeat; /* Sutil patrón de puntos de fondo */
-            background-blend-mode: multiply;
+            background:
+                linear-gradient(135deg, rgba(23,107,158,0.05), transparent 50%),
+                radial-gradient(circle at top left, rgba(75,181,255,0.12), transparent 60%);
         }
 
-        .scene.active {
-            display: flex;
-        }
+        .scene.active { display: flex; }
 
         .visual-stage {
             flex-grow: 1;
@@ -88,63 +91,85 @@
             margin-bottom: 20px;
             position: relative;
             display: flex;
-            justify-content: center;
-            align-items: center;
+            flex-direction: column; /* para dejar espacio claro debajo de la imagen */
+            justify-content: flex-start;
+            align-items: stretch;
             overflow: hidden;
-            border-radius: 8px;
-            box-shadow: inset 0 0 10px rgba(0,0,0,0.1);
+            border-radius: 10px;
+            box-shadow: inset 0 0 10px rgba(0,0,0,0.06);
         }
 
-        /* Placeholder de Imagen */
+        /* Imagen + zona clicable ampliada */
+        .visual-stage-inner {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 10px;
+        }
+
         .image-placeholder {
             width: 100%;
             height: 100%;
-            background-color: #e0e0e0;
+            background-color: #dfefff;
             display: flex;
             justify-content: center;
             align-items: center;
             font-family: var(--font-comic);
-            color: #777;
-            font-size: 1.2rem;
+            color: #4c6a8a;
+            font-size: 1.1rem;
             text-align: center;
-            border: 2px dashed #bbb;
-            background-image: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgdmlld0JveD0iMCAwIDEwMCAxMDAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGcgZmlsbD0ibm9uZSIgc3Jyb2tlPSIjY2NjIiBzdHJva2Utd2lkdGg9IjIiPjxjaXJjbGUgY3g9IjUwIiBjeT0iMzUiIHI9IjEwIi8+PHBhdGggZD0iTTMwIDc1bDEwLTExIDE1IDEwIDEwLTcuNSAxNSAxMCIvPjxwYXRoIGQ9Ik03MCAxNVYzME04NSA1MEg3ME01MCA3MEg0ME0yNSAzMEgyMCIvPjwvZz48L3N2Zz4=');
-            background-repeat: no-repeat;
-            background-position: center 30%;
-            background-size: 40px;
+            border: 2px dashed rgba(16,32,53,0.4);
         }
 
         .image-placeholder img {
             max-width: 100%;
             max-height: 100%;
             object-fit: contain;
-            display: none; /* Oculto por defecto, se mostrará cuando se inserte la imagen real */
         }
-        /* Fin Placeholder de Imagen */
+
+        /* Franja clicable claramente visible debajo de la imagen */
+        .click-hint-area {
+            background: rgba(23,107,158,0.08);
+            border-top: 2px dashed rgba(16,32,53,0.3);
+            padding: 10px 14px;
+            text-align: center;
+            font-family: var(--font-comic);
+            font-size: 0.95rem;
+            color: var(--color-text);
+            cursor: pointer;
+        }
+
+        .click-hint-area span.icon {
+            margin-right: 6px;
+        }
+
+        .click-hint-area:hover {
+            background: rgba(75,181,255,0.2);
+        }
 
         .interaction-target {
-            z-index: 10;
             cursor: pointer;
-            transition: transform 0.2s ease-out, filter 0.2s ease-out;
+            transition: transform 0.18s ease-out, filter 0.18s ease-out;
         }
         .interaction-target:hover {
-            /* transform: scale(1.05); */
-            filter: brightness(1.1);
+            filter: brightness(1.08);
+            transform: translateY(-2px);
         }
 
         /* Globos de Diálogo */
         .speech-bubble {
-            background: white;
+            background: #FFFFFF;
             border: 3px solid var(--color-border);
-            border-radius: 20px;
-            padding: 20px;
+            border-radius: 18px;
+            padding: 16px 18px;
             font-family: var(--font-comic);
             position: relative;
-            margin-top: 15px;
-            box-shadow: 5px 5px 0px rgba(0,0,0,0.15);
+            margin-top: 16px;
+            box-shadow: 4px 4px 0 #102035;
             opacity: 0;
-            transform: translateY(20px);
-            transition: all 0.6s cubic-bezier(0.68, -0.55, 0.27, 1.55); /* Bounce effect */
+            transform: translateY(18px);
+            transition: opacity 0.45s ease-out, transform 0.45s ease-out;
         }
 
         .speech-bubble.visible {
@@ -152,77 +177,97 @@
             transform: translateY(0);
         }
 
-        .speech-bubble::after { /* Cola del globo de diálogo */
+        .speech-bubble::after {
             content: '';
             position: absolute;
-            top: -15px;
-            left: 30px;
-            border-width: 0 15px 15px;
+            top: -14px;
+            left: 32px;
+            border-width: 0 14px 14px;
             border-style: solid;
             border-color: transparent transparent var(--color-border);
-            filter: drop-shadow(1px 1px 0 rgba(0,0,0,0.1));
         }
-        .speech-bubble::before { /* Relleno blanco de la cola */
+        .speech-bubble::before {
             content: '';
             position: absolute;
             top: -11px;
-            left: 30px;
-            border-width: 0 15px 15px;
+            left: 32px;
+            border-width: 0 14px 14px;
             border-style: solid;
-            border-color: transparent transparent white;
+            border-color: transparent transparent #FFFFFF;
             z-index: 1;
         }
 
         .narrative-box {
             background: var(--color-primary);
-            color: white;
-            padding: 10px 15px;
+            color: #FFFFFF;
+            padding: 10px 16px;
             font-size: 1rem;
             border: 3px solid var(--color-border);
-            margin-bottom: 15px;
-            font-weight: bold;
+            margin-bottom: 14px;
+            font-weight: 700;
             text-align: center;
             border-radius: 8px;
-            box-shadow: 4px 4px 0px rgba(0,0,0,0.15);
+            box-shadow: 3px 3px 0 #102035;
         }
 
         /* --- CONTROLES --- */
         .controls {
             display: flex;
             justify-content: space-between;
-            padding: 15px 25px;
-            background: var(--color-secondary);
+            align-items: center;
+            gap: 10px;
+            padding: 14px 24px;
+            background: linear-gradient(90deg, var(--color-secondary), #a7dbff);
             border-top: 5px solid var(--color-border);
             border-bottom-left-radius: 8px;
             border-bottom-right-radius: 8px;
         }
 
         button {
-            background: white;
+            background: #FFFFFF;
             border: 3px solid var(--color-border);
-            padding: 12px 25px;
+            padding: 10px 22px;
             font-family: var(--font-comic);
             font-weight: bold;
             cursor: pointer;
-            border-radius: 8px;
-            box-shadow: 4px 4px 0px rgba(0,0,0,0.3);
-            transition: transform 0.1s, background-color 0.2s;
-            font-size: 1rem;
+            border-radius: 999px;
+            box-shadow: 4px 4px 0 #102035;
+            transition: transform 0.12s ease-out, background-color 0.2s ease-out, box-shadow 0.12s ease-out;
+            font-size: 0.95rem;
             text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        button.primary {
+            background-color: var(--color-accent);
+            color: #102035;
+        }
+
+        button.secondary {
+            background-color: var(--color-primary);
+            color: #FFFFFF;
         }
 
         button:hover:not(:disabled) {
-            background-color: #fffac2;
+            background-color: #f7fbff;
+        }
+
+        button.primary:hover:not(:disabled) {
+            background-color: #ffd08a;
+        }
+
+        button.secondary:hover:not(:disabled) {
+            background-color: #1d7fbe;
         }
 
         button:active:not(:disabled) {
-            transform: translate(3px, 3px);
-            box-shadow: 1px 1px 0px rgba(0,0,0,0.3);
+            transform: translate(2px, 2px);
+            box-shadow: 2px 2px 0 #102035;
         }
 
         button:disabled {
-            background: #e0e0e0;
-            color: #999;
+            background: #dde4ef;
+            color: #9aa4b5;
             cursor: not-allowed;
             box-shadow: none;
             transform: none;
@@ -237,15 +282,18 @@
 
         .log-toggle {
             background: var(--color-primary);
-            color: white;
+            color: #ffffff;
             width: 100%;
             text-align: left;
-            margin-bottom: 5px;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
 
         .terminal {
-            background: #1f1f1f;
-            color: #00ff00;
+            background: #050b14;
+            color: #7CFFB2;
             font-family: 'Courier New', monospace;
             padding: 15px;
             height: 200px;
@@ -254,45 +302,41 @@
             border: 3px solid var(--color-border);
             font-size: 0.85rem;
             border-radius: 8px;
-            box-shadow: inset 0 0 10px rgba(0,0,0,0.5);
+            box-shadow: inset 0 0 10px rgba(0,0,0,0.6);
+            position: relative;
+        }
+
+        .terminal::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 6px;
+            background: linear-gradient(90deg, #ff5f57, #febc2e, #28c840);
         }
 
         .terminal.open { display: block; }
         .log-entry { margin-bottom: 5px; border-bottom: 1px dashed #333; padding-bottom: 3px; }
         .log-time { color: #ffff00; margin-right: 10px; }
 
-        /* --- ANIMACIONES --- */
-        @keyframes pulse {
-            0% { transform: scale(1); filter: drop-shadow(0 0 0 rgba(255,165,0,0)); }
-            50% { transform: scale(1.05); filter: drop-shadow(0 0 10px var(--color-accent)); }
-            100% { transform: scale(1); filter: drop-shadow(0 0 0 rgba(255,165,0,0)); }
-        }
-
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-
-        @keyframes float {
-            0% { transform: translateY(0px); }
-            50% { transform: translateY(-5px); }
-            100% { transform: translateY(0px); }
-        }
-
         /* --- Minijuego Drag & Drop --- */
         .minigame-container {
             display: flex;
             flex-direction: column;
-            gap: 20px;
+            gap: 18px;
             width: 100%;
-            padding: 20px;
+            padding: 18px 18px 20px;
             border: 2px dashed var(--color-primary);
             border-radius: 10px;
-            background-color: var(--color-panel-bg);
-            margin-top: 20px;
+            background-color: #f2f8ff;
+            margin-top: 16px;
         }
 
         .drop-zones {
             display: flex;
             justify-content: space-around;
-            gap: 15px;
+            gap: 14px;
             min-height: 200px;
         }
 
@@ -300,8 +344,8 @@
             flex: 1;
             border: 3px dashed var(--color-secondary);
             border-radius: 10px;
-            padding: 15px;
-            background-color: #fff;
+            padding: 14px;
+            background-color: #ffffff;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -310,19 +354,20 @@
         }
 
         .drop-zone.hover {
-            background-color: #e6ffe6;
+            background-color: #e0f6ff;
             border-color: var(--color-primary);
         }
         .drop-zone.correct {
-            border-color: green;
-            box-shadow: 0 0 10px green;
+            border-color: #3bb273;
+            box-shadow: 0 0 10px rgba(59,178,115,0.8);
         }
 
         .drop-zone h3 {
             font-family: var(--font-comic);
             color: var(--color-primary);
-            margin-bottom: 10px;
-            font-size: 1.3rem;
+            margin-bottom: 8px;
+            font-size: 1.05rem;
+            text-align: center;
         }
 
         .draggable-items {
@@ -333,50 +378,54 @@
         }
 
         .draggable {
-            background-color: var(--color-accent);
-            color: white;
-            padding: 10px 15px;
+            background-color: var(--color-secondary);
+            color: #051428;
+            padding: 8px 14px;
             border-radius: 20px;
             cursor: grab;
             font-family: var(--font-narrative);
             font-size: 0.9rem;
-            box-shadow: 2px 2px 0px rgba(0,0,0,0.2);
+            box-shadow: 2px 2px 0 #102035;
             transition: background-color 0.2s, transform 0.1s;
         }
 
         .draggable:hover {
-            background-color: #f07040;
+            background-color: #7fd0ff;
         }
         .draggable:active {
             cursor: grabbing;
-            transform: scale(0.98);
+            transform: scale(0.97);
         }
         .draggable.dragged {
-            opacity: 0.5;
+            opacity: 0.6;
         }
         .draggable.correct {
-            background-color: green;
+            background-color: #3bb273;
+            color: #ffffff;
             cursor: default;
         }
 
         .minigame-status {
             text-align: center;
             font-family: var(--font-comic);
-            font-size: 1.1rem;
+            font-size: 1.02rem;
             color: var(--color-text);
         }
-        .minigame-status.success { color: green; }
+        .minigame-status.success { color: #3bb273; }
 
-        /* Media Queries para Responsiveness */
+        /* --- Animaciones generales --- */
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* --- Responsive --- */
         @media (max-width: 768px) {
-            h1 { font-size: 2.5rem; }
-            .comic-container { margin: 10px; }
-            .scene { min-height: 500px; padding: 15px; }
-            .speech-bubble { padding: 15px; font-size: 0.9rem; }
-            .controls { padding: 10px 15px; }
-            button { padding: 8px 15px; font-size: 0.9rem; }
+            h1 { font-size: 2.4rem; margin-bottom: 18px; }
+            .comic-container { margin: 10px; box-shadow: 6px 6px 0 #102035; }
+            .scene { min-height: 520px; padding: 16px; }
+            .speech-bubble { padding: 14px 16px; font-size: 0.9rem; }
+            .controls { padding: 10px 14px; flex-direction: column; }
+            button { padding: 8px 16px; font-size: 0.85rem; width: 100%; }
+            #page-indicator { text-align: center; }
             .drop-zones { flex-direction: column; }
-            .image-placeholder { font-size: 1rem; }
         }
 
     </style>
@@ -384,7 +433,9 @@
 <body>
 
 <audio id="pageFlipSound" src="page-flip.mp3" preload="auto"></audio>
-<audio id="correctSound" src="correct.mp3" preload="auto"></audio> <audio id="incorrectSound" src="incorrect.mp3" preload="auto"></audio> <h1>La Transformación de Ana</h1>
+<audio id="correctSound" src="correct.mp3" preload="auto"></audio>
+<audio id="incorrectSound" src="incorrect.mp3" preload="auto"></audio>
+<h1>La Transformación de Ana</h1>
 
 <div class="comic-container">
 
@@ -394,6 +445,14 @@
             <div class="image-placeholder interaction-target" onclick="interact(1)">
                 <img src="scene-1.jpg" alt="Escena 1: La Frustración" style="display: block;">
             </div>
+        </div>
+        <!-- Guía para el usuario en la primera diapositiva -->
+        <div class="speech-bubble visible" id="help-bubble" style="margin-top: 10px; font-size: 0.9rem; background: #f2f8ff; position: relative;">
+            <button type="button" onclick="dismissHelp()" style="position:absolute; top:6px; right:10px; border:none; background:transparent; font-weight:bold; cursor:pointer; font-family:var(--font-comic);">✕</button>
+            <strong>Guía rápida:</strong><br>
+            • Toca la ilustración de la viñeta para revelar el diálogo y desbloquear el botón "Siguiente".<br>
+            • Usa los botones <em>Anterior</em> y <em>Siguiente</em> de abajo para pasar de escena.<br>
+            • En las escenas de minijuego, arrastra cada tarjeta a la categoría o respuesta que creas correcta para ganar puntos.
         </div>
         <div class="speech-bubble" id="bubble-1">
             <strong>Ana (Pensamiento):</strong> "¡Ugh! Otro curso donde solo 'consumo' PDFs. Siento que solo cumplo trámites, ¡no que realmente aprendo o creo algo!"
@@ -483,41 +542,103 @@
         </div>
     </div>
 
+    <!-- NUEVA ESCENA 7: MINIJUEGO 2 (VERDADERO/FALSO) -->
     <div class="scene" id="scene-7" data-index="7">
-        <div class="narrative-box">ESCENA 7: APLICACIÓN DOCENTE (Inspirando a Otros)</div>
+        <div class="narrative-box">ESCENA 7: MINIJUEGO - ¿PRAXIS O TRADICIONAL?</div>
         <div class="visual-stage">
-            <div class="image-placeholder interaction-target" onclick="interact(7)">
-                <img src="scene-7.jpg" alt="Escena 7: Aplicación Docente" style="display: block;">
+            <div class="image-placeholder">
+                <img src="scene-7.jpg" alt="Escena 7: Minijuego - Praxis o Tradicional" style="display: block;">
+            </div>
+            <div class="minigame-container interaction-target" onclick="interact(7)">
+                <p class="minigame-status" id="minigame-status-2">Lee cada afirmación y marca si refleja una pedagogía centrada en la praxis.</p>
+                <div id="vf-questions">
+                    <div class="vf-item" data-correct="true">
+                        <span>El estudiante investiga problemas reales de su contexto.</span>
+                        <button type="button" onclick="answerVF(this, true, 2)">Sí, es praxis</button>
+                        <button type="button" onclick="answerVF(this, false, 2)">No, es tradicional</button>
+                    </div>
+                    <div class="vf-item" data-correct="false">
+                        <span>La evaluación se basa solo en un examen final de memoria.</span>
+                        <button type="button" onclick="answerVF(this, true, 2)">Sí, es praxis</button>
+                        <button type="button" onclick="answerVF(this, false, 2)">No, es tradicional</button>
+                    </div>
+                    <div class="vf-item" data-correct="true">
+                        <span>El estudiante dialoga con sus pares y con la comunidad para tomar decisiones.</span>
+                        <button type="button" onclick="answerVF(this, true, 2)">Sí, es praxis</button>
+                        <button type="button" onclick="answerVF(this, false, 2)">No, es tradicional</button>
+                    </div>
+                </div>
             </div>
         </div>
         <div class="speech-bubble" id="bubble-7">
-            <strong>Ana (Docente):</strong> "¡Hoy no hay lección magistral! Hoy salimos a investigar el problema del arroyo. El chatbot será su asistente, guiándolos en cada paso de su descubrimiento."
+            <strong>Ana (Docente):</strong> "Cada decisión que tomamos en el aula puede acercarnos a la praxis o mantenernos en la tradición. ¿Reconoces la diferencia?"
         </div>
     </div>
 
+    <!-- NUEVA ESCENA 8: MINIJUEGO 3 (ORDENAR PASOS) -->
     <div class="scene" id="scene-8" data-index="8">
-        <div class="narrative-box">ESCENA 8: CIERRE Y REFLEXIÓN (Tu Turno)</div>
+        <div class="narrative-box">ESCENA 8: MINIJUEGO - PASOS DE UNA EXPERIENCIA DE PRAXIS</div>
         <div class="visual-stage">
-            <div class="image-placeholder interaction-target" onclick="interact(8)">
-                <img src="scene-8.jpg" alt="Escena 8: Cierre y Reflexión" style="display: block;">
+            <div class="image-placeholder">
+                <img src="scene-8.jpg" alt="Escena 8: Minijuego - Pasos de la Praxis" style="display: block;">
+            </div>
+            <div class="minigame-container interaction-target" onclick="interact(8)">
+                <p class="minigame-status" id="minigame-status-3">Ordena los pasos de una secuencia didáctica basada en la praxis.</p>
+                <ol id="steps-list">
+                    <li data-order="2">Diseñar actividades de indagación y acción en el territorio.</li>
+                    <li data-order="1">Identificar un problema significativo en la realidad del estudiante.</li>
+                    <li data-order="4">Compartir los resultados con la comunidad y reflexionar sobre el impacto.</li>
+                    <li data-order="3">Analizar los datos recogidos junto con los estudiantes.</li>
+                </ol>
+                <button type="button" onclick="shuffleSteps()">Mezclar pasos</button>
+                <button type="button" onclick="checkSteps()">Verificar orden</button>
             </div>
         </div>
         <div class="speech-bubble" id="bubble-8">
-            <strong>Ana:</strong> "He vivido la transformación. De un aprendizaje aburrido a uno lleno de propósito y creación. Ahora, ¿estás listo tú para transformar tu práctica educativa de un repositorio estático a un vibrante laboratorio de experiencias?"
-            <br><br>
-            <button onclick="generateReport()" style="background: var(--color-accent); color: white; width: 100%; border-color: var(--color-border);">📂 Generar Informe de Práctica</button>
+            <strong>Ana:</strong> "Una buena experiencia de praxis es un viaje: problema, acción, reflexión y transformación. ¿En qué orden lo harías tú?"
+        </div>
+    </div>
+
+    <!-- ESCENA 9: CIERRE, MEDALLAS Y MENSAJE FINAL -->
+    <div class="scene" id="scene-9" data-index="9">
+        <div class="narrative-box">ESCENA 9: RESULTADOS Y REFLEXIÓN FINAL</div>
+        <div class="visual-stage" id="results-stage">
+            <div class="image-placeholder">
+                <span style="font-family: var(--font-comic);">Haz clic en "Verificar resultados" para ver tu medalla</span>
+            </div>
+            <div style="width:100%; text-align:center; margin-top:14px;">
+                <button id="results-btn" class="primary" onclick="revealResults()">Verificar resultados</button>
+            </div>
+            <div id="medals-container" style="width:100%; text-align:center; margin-top:20px;"></div>
+        </div>
+        <div class="speech-bubble" id="bubble-9">
+            <strong>Ana:</strong> "Este recorrido solo es el comienzo. Usa lo que aprendiste para transformar tus futuras clases."<br><br>
+            <button onclick="generateReport()" class="primary" style="width: 100%; border-color: var(--color-border);">📂 Generar Informe de Práctica</button>
+        </div>
+    </div>
+
+    <!-- ESCENA 10: DESCARGA AUTOMÁTICA DEL INFORME -->
+    <div class="scene" id="scene-10" data-index="10">
+        <div class="narrative-box">ESCENA 10: DESCARGA DEL INFORME</div>
+        <div class="visual-stage">
+            <div class="image-placeholder">
+                <span style="font-family: var(--font-comic);">Generando y descargando tu informe...</span>
+            </div>
+        </div>
+        <div class="speech-bubble" id="bubble-10">
+            <strong>Sistema:</strong> Tu informe se está descargando automáticamente. ¡Gracias por recorrer la historieta!
         </div>
     </div>
 
     <div class="controls">
-        <button id="btn-prev" onclick="changeScene(-1)" disabled>⬅ Anterior</button>
-        <span id="page-indicator" style="font-weight: bold; align-self: center; font-family: var(--font-comic); font-size: 1.1rem; color: var(--color-text);">1 / 8</span>
-        <button id="btn-next" onclick="changeScene(1)" disabled>Siguiente ➡</button>
+        <button id="btn-prev" class="secondary" onclick="changeScene(-1)" disabled>⬅ Anterior</button>
+        <span id="page-indicator" style="font-weight: bold; align-self: center; font-family: var(--font-comic); font-size: 1.1rem; color: var(--color-text);">1 / 10</span>
+        <button id="btn-next" class="primary" onclick="changeScene(1)" disabled>Siguiente ➡</button>
     </div>
 </div>
 
 <div class="log-panel">
-    <button class="log-toggle" onclick="toggleTerminal()">📋 Ver Diario de Campo (Historial)</button>
+    <button class="log-toggle secondary" onclick="toggleTerminal()">📋 Ver Diario de Campo (Historial)</button>
     <div class="terminal" id="terminal-content">
         <div class="log-entry">> Sistema iniciado. Esperando interacción del usuario...</div>
     </div>
@@ -527,86 +648,100 @@
     <h3>PARA EL DOCENTE: Guía Pedagógica y de Implementación</h3>
     <p><strong>Objetivo Pedagógico:</strong> Esta historieta interactiva busca que el futuro docente reflexione y experimente un cambio de paradigma, moviéndose de una enseñanza basada en la transmisión de contenidos a una pedagogía de la praxis, donde el estudiante es constructor activo de su aprendizaje, resolviendo problemas reales y colaborando.</p>
     <p><strong>Verificación de Integridad y Progreso:</strong> Al finalizar la historieta, el sistema genera un archivo TXT con un historial de las interacciones del usuario y un hash SHA-256 único. Este hash sirve como "firma digital" para asegurar que el contenido del informe no ha sido alterado manualmente, confirmando que el estudiante ha navegado por la experiencia. Si el estudiante intenta modificar el texto del informe, el hash resultante no coincidirá con el calculado por el sistema.</p>
-    <p><strong>Integración con Moodle:</strong></p>
-    <ol>
-        <li><strong>Subida del Recurso:</strong> Suba este archivo HTML (`historieta_ana_v2.html`) a Moodle como un "Recurso: Archivo". Asegúrese de que el archivo `page-flip.mp3` (y `correct.mp3`, `incorrect.mp3` si los usa) estén en la misma carpeta que el HTML al comprimirlos, o suba el HTML directamente y los archivos de audio por separado en la misma sección de Moodle.</li>
-        <li><strong>Actividad de Tarea:</strong> Cree una actividad de "Tarea" en Moodle. En las instrucciones de la tarea, pida a los estudiantes que naveguen por la historieta, completen todas las interacciones (incluido el minijuego) y, al finalizar, descarguen el archivo `Bitacora_Transformacion_Ana.txt`.</li>
-        <li><strong>Entrega y Calificación:</strong> Los estudiantes deberán subir este archivo TXT como entrega de la tarea. Usted podrá verificar el hash del informe para confirmar la autenticidad del recorrido del estudiante. Si el hash del archivo subido no coincide con el que debería generar el sistema (puede generar uno usted mismo completando la historieta), indicaría una posible manipulación.</li>
-    </ol>
-    <p><strong>Ideas para Expansión Futura:</strong></p>
-    <ul>
-        <li>**Más Minijuegos:** Añadir más desafíos interactivos que refuercen conceptos clave en diferentes viñetas.</li>
-        <li>**Imágenes Dinámicas:** Usar JavaScript para cambiar imágenes o añadir animaciones CSS más complejas a las ilustraciones.</li>
-        <li>**Personalización del Avatar:** Permitir que el usuario elija el avatar de Ana al inicio.</li>
-        <li>**Ramas Narrativas:** Integrar decisiones del usuario que cambien ligeramente el curso de la historia, con diferentes finales o reflexiones.</li>
-        <li>**Integración con APIs:** Aunque no se requiere, se podría integrar con APIs para generar contenido dinámico o ejercicios.</li>
-        <li>**Gamificación Avanzada:** Puntos, insignias, tablas de clasificación (aunque esto requeriría un backend).</li>
-    </ul>
 </div>
 
 <script>
     // --- ESTADO DEL LABORATORIO ---
     let currentScene = 1;
-    const totalScenes = 8;
+    const totalScenes = 10; // actualizado por nueva escena
     const state = {
-        unlocked: Array(totalScenes + 1).fill(false), // +1 para usar índice 1-based
+        unlocked: Array(totalScenes + 1).fill(false),
         interactions: [],
         startTime: new Date(),
         sceneTimes: {}
     };
-
-    // Inicializar tiempo de escena 1
     state.sceneTimes[1] = new Date();
 
-    // Audio
     const pageFlipSound = document.getElementById('pageFlipSound');
     const correctSound = document.getElementById('correctSound');
     const incorrectSound = document.getElementById('incorrectSound');
 
+    // Sistema de puntos global
+    let score = 0;
+    const maxScore = 29; // 10 (minijuego 1) + 9 (minijuego 2) + 10 (minijuego 3)
+
+    function addPoints(points) {
+        score += points;
+        logToTerminal(`PUNTOS: Has ganado ${points} puntos. Total actual: ${score}.`);
+    }
+
     // --- LÓGICA DE NAVEGACIÓN ---
     function updateScene() {
-        // Ocultar todas
         document.querySelectorAll('.scene').forEach(el => el.classList.remove('active'));
-
-    // Mostrar actual
         const activeScene = document.getElementById(`scene-${currentScene}`);
-        activeScene.classList.add('active');
+        if (activeScene) activeScene.classList.add('active');
 
-        // Reproducir sonido de página (si existe)
         if (pageFlipSound) {
             pageFlipSound.currentTime = 0;
-            pageFlipSound.play().catch(e => { /* Ignorar error si no hay interacción previa */ });
+            pageFlipSound.play().catch(() => {});
         }
 
-        // Actualizar UI
-        document.getElementById('page-indicator').innerText = `${currentScene} / ${totalScenes}`;
-        document.getElementById('btn-prev').disabled = (currentScene === 1);
+        const indicator = document.getElementById('page-indicator');
+        if (indicator) indicator.innerText = `${currentScene} / ${totalScenes}`;
+        const btnPrev = document.getElementById('btn-prev');
+        const btnNext = document.getElementById('btn-next');
+        if (btnPrev) btnPrev.disabled = (currentScene === 1);
 
-        // Solo permitir siguiente si está desbloqueada la escena actual
         const isUnlocked = state.unlocked[currentScene];
-        document.getElementById('btn-next').disabled = (currentScene === totalScenes || !isUnlocked);
+        if (btnNext) btnNext.disabled = (currentScene === totalScenes || !isUnlocked);
 
-        // Registrar tiempo de entrada
         if (!state.sceneTimes[currentScene]) {
             state.sceneTimes[currentScene] = new Date();
         }
 
         logToTerminal(`Navegación: Usuario entró a Escena ${currentScene}`);
+
+        // Si es la escena final (10), generar y descargar automáticamente
+        if (currentScene === totalScenes) {
+            setTimeout(() => {
+                try { generateReport(); } catch (e) {}
+            }, 350);
+        }
+    }
+
+    function revealResults() {
+        const btn = document.getElementById('results-btn');
+        if (btn) {
+            btn.disabled = true;
+            btn.textContent = 'Mostrando...';
+        }
+        showMedals();
+        // Desbloquear la escena 9 para permitir pasar a la 10
+        if (!state.unlocked[9]) {
+            completeInteraction(9);
+        }
     }
 
     function changeScene(direction) {
-        currentScene += direction;
+        const next = currentScene + direction;
+        if (next < 1 || next > totalScenes) return;
+        currentScene = next;
         updateScene();
     }
 
     // --- LÓGICA DE INTERACCIÓN ---
     function interact(sceneIndex) {
-        // CASO ESPECIAL: Escena 6 (Minijuego)
-        // Hacer clic en el contenedor del juego solo registra actividad, no desbloquea.
-        // El desbloqueo real ocurre en la función checkMinigame()
+        // CASO ESPECIAL: Escena 6 (Minijuego drag & drop)
         if (sceneIndex === 6) {
             if (!state.unlocked[sceneIndex]) {
                 logToTerminal(`JUEGO: Usuario interactuando con el tablero de clasificación.`);
+            }
+            return;
+        }
+        // Escena 7 y 8: los minijuegos 2 y 3 se completan desde sus funciones específicas
+        if (sceneIndex === 7 || sceneIndex === 8) {
+            if (!state.unlocked[sceneIndex]) {
+                logToTerminal(`JUEGO: Usuario explorando el minijuego de la escena ${sceneIndex}.`);
             }
             return;
         }
@@ -623,12 +758,12 @@
         const bubble = document.getElementById(`bubble-${sceneIndex}`);
         if (bubble) bubble.classList.add('visible');
 
-        // Habilitar botón siguiente
+        // Habilitar botón siguiente si no estamos en la última escena
         if (sceneIndex < totalScenes) {
-            document.getElementById('btn-next').disabled = false;
+            const btnNext = document.getElementById('btn-next');
+            if (btnNext) btnNext.disabled = false;
         }
 
-        // Registrar acción en datos
         const interactionData = {
             scene: sceneIndex,
             timestamp: new Date().toISOString(),
@@ -641,13 +776,19 @@
 
         logToTerminal(`ACCIÓN: ${msg} [Desbloqueado]`);
 
-        // Reproducir sonido de éxito (si existe y no es el juego que tiene el suyo propio)
-        if(sceneIndex !== 6 && correctSound) {
+        if (sceneIndex !== 6 && correctSound) {
             correctSound.currentTime = 0;
-            correctSound.play().catch(e => {});
+            correctSound.play().catch(() => {});
         }
     }
 
+    // Cerrar la viñeta de ayuda inicial
+    function dismissHelp() {
+        const help = document.getElementById('help-bubble');
+        if (help) help.style.display = 'none';
+    }
+
+    // --- Minijuego 2 y 3, sistema de medallas y resto de funciones permanecen igual ---
     // --- LÓGICA DEL MINIJUEGO (DRAG & DROP) ---
     const draggables = document.querySelectorAll('.draggable');
     const dropZones = document.querySelectorAll('.drop-zone');
@@ -699,7 +840,7 @@
 
     function checkMinigame() {
         let correctCount = 0;
-        const totalItems = 8; // Total de conceptos
+        const totalItems = 8; // 10 puntos por cada minijuego bien resuelto
         let allCorrect = true;
 
         const zones = document.querySelectorAll('.drop-zone');
@@ -733,6 +874,7 @@
 
             // DESBLOQUEAR ESCENA 6
             completeInteraction(6);
+            addPoints(10);
 
         } else {
             statusMsg.innerText = "Aún hay errores. Revisa los conceptos rojos o mal ubicados e intenta de nuevo.";
@@ -742,6 +884,154 @@
             setTimeout(() => { statusMsg.style.color = "var(--color-text)"; }, 3000);
         }
     }
+
+    // Minijuego 2: verdadero/falso estilo praxis/tradicional
+    function answerVF(button, userSaysPraxis, gameId) {
+        const item = button.parentElement;
+        if (!item || item.classList.contains('answered')) return;
+
+        const isPraxisCorrect = item.getAttribute('data-correct') === 'true';
+        const isCorrect = (userSaysPraxis === isPraxisCorrect);
+
+        item.classList.add('answered');
+        Array.from(item.querySelectorAll('button')).forEach(btn => btn.disabled = true);
+
+        if (isCorrect) {
+            item.style.backgroundColor = '#e5ffe9';
+            addPoints(3);
+        } else {
+            item.style.backgroundColor = '#ffe5e5';
+        }
+
+        // Si todas las vf-item de este juego han sido respondidas, marcar escena como completa
+        const container = document.getElementById('vf-questions');
+        const remaining = container.querySelectorAll('.vf-item:not(.answered)').length;
+        if (remaining === 0 && !state.unlocked[7]) {
+            completeInteraction(7);
+        }
+    }
+
+    // Minijuego 3: ordenar pasos
+    function shuffleSteps() {
+        const list = document.getElementById('steps-list');
+        const items = Array.from(list.children);
+        items.sort(() => Math.random() - 0.5);
+        items.forEach(li => list.appendChild(li));
+    }
+
+    function checkSteps() {
+        const list = document.getElementById('steps-list');
+        const items = Array.from(list.children);
+        let allCorrect = true;
+        items.forEach((li, index) => {
+            const required = parseInt(li.getAttribute('data-order'), 10);
+            if (required === index + 1) {
+                li.style.backgroundColor = '#e5ffe9';
+            } else {
+                li.style.backgroundColor = '#ffe5e5';
+                allCorrect = false;
+            }
+        });
+
+        if (allCorrect && !state.unlocked[8]) {
+            addPoints(10);
+            completeInteraction(8);
+        }
+    }
+
+    // Mostrar medallas al llegar a la última escena
+    function showMedals() {
+        const container = document.getElementById('medals-container');
+        if (!container) return;
+        container.innerHTML = '';
+
+        const title = document.createElement('h2');
+        title.style.fontFamily = 'var(--font-title)';
+        title.style.marginBottom = '10px';
+
+        const msg = document.createElement('p');
+        msg.style.fontFamily = 'var(--font-comic)';
+
+        let medalType = 'none';
+        if (score >= 24) medalType = 'gold';
+        else if (score >= 18) medalType = 'silver';
+        else if (score >= 10) medalType = 'bronze';
+
+        if (medalType === 'none') {
+            title.textContent = 'Recomendación';
+            msg.textContent = 'Creemos que sería mejor que vuelvas a ver la historieta y revises los conceptos para obtener un mejor resultado.';
+            container.appendChild(title);
+            container.appendChild(msg);
+            return;
+        }
+
+        title.textContent = '¡Resultados de tu recorrido!';
+        const medalWrap = document.createElement('div');
+        medalWrap.style.display = 'flex';
+        medalWrap.style.justifyContent = 'center';
+        medalWrap.style.alignItems = 'center';
+        medalWrap.style.gap = '12px';
+        medalWrap.style.margin = '16px 0';
+
+        const medal = document.createElement('div');
+        medal.style.width = '90px';
+        medal.style.height = '90px';
+        medal.style.borderRadius = '50%';
+        medal.style.border = '4px solid var(--color-border)';
+        medal.style.display = 'flex';
+        medal.style.alignItems = 'center';
+        medal.style.justifyContent = 'center';
+        medal.style.fontFamily = 'var(--font-title)';
+        medal.style.fontSize = '2rem';
+        medal.style.color = '#fff';
+        medal.style.animation = 'fadeIn 0.5s ease-out, pulseMedal 1.2s ease-in-out infinite alternate';
+
+        if (medalType === 'gold') {
+            medal.textContent = '🥇';
+            medal.style.background = '#f0c419';
+        } else if (medalType === 'silver') {
+            medal.textContent = '🥈';
+            medal.style.background = '#c0c0c0';
+        } else {
+            medal.textContent = '🥉';
+            medal.style.background = '#cd7f32';
+        }
+
+        // pequeñas estrellitas animadas alrededor
+        const stars = document.createElement('div');
+        stars.style.position = 'relative';
+        stars.style.width = '0';
+        stars.style.height = '0';
+        const star = (x, y, delay) => {
+            const s = document.createElement('div');
+            s.textContent = '✦';
+            s.style.position = 'absolute';
+            s.style.left = x + 'px';
+            s.style.top = y + 'px';
+            s.style.color = '#fff';
+            s.style.textShadow = '0 0 6px rgba(255,255,255,0.8)';
+            s.style.animation = `fadeIn 0.4s ease ${delay}s both`;
+            return s;
+        };
+        stars.appendChild(star(-60, -40, 0.0));
+        stars.appendChild(star(60, -30, 0.15));
+        stars.appendChild(star(-50, 40, 0.3));
+        stars.appendChild(star(55, 50, 0.45));
+
+        medalWrap.appendChild(medal);
+        medalWrap.appendChild(stars);
+
+        msg.textContent = `Puntos obtenidos: ${score} de un máximo de ${maxScore}.`;
+
+        container.appendChild(title);
+        container.appendChild(medalWrap);
+        container.appendChild(msg);
+    }
+
+    // Animación de medalla
+    const style = document.createElement('style');
+    style.textContent = `@keyframes pulseMedal { 0% { transform: translateY(0) scale(1); } 100% { transform: translateY(-4px) scale(1.06); } }`;
+    document.head.appendChild(style);
 
     // --- SISTEMA DE LOGS (TERMINAL) ---
     function logToTerminal(text) {
